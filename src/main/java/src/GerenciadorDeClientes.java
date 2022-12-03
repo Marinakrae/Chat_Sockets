@@ -18,9 +18,6 @@ public class GerenciadorDeClientes extends Thread{
     private BufferedReader leitor;
     private PrintWriter escritor;
 
-//    public BufferedReader getLeitor() {
-//        return leitor;
-//    }
 
     public String getNomeCliente() {
         return nomeCliente;
@@ -51,11 +48,11 @@ public class GerenciadorDeClientes extends Thread{
 
             while (true){
                 msg = leitor.readLine();
-                if(msg.equalsIgnoreCase("::SAIR")){
+                if(msg.equalsIgnoreCase(Comandos.SAIR)){
                     this.cliente.close();
-                } else if (msg.toLowerCase().startsWith("::msg")) {
+                } else if (msg.toLowerCase().startsWith(Comandos.MENSAGEM)) {
                     //pegar o cliente com base no nome informado
-                    String nomeDestinatario = msg.substring(5, msg.length());
+                    String nomeDestinatario = msg.substring(Comandos.MENSAGEM.length(), msg.length());
                     GerenciadorDeClientes destinatario = clientes.get(nomeDestinatario);
                     if (destinatario == null) {
                         escritor.println("O cliente informado nao existe");
@@ -65,7 +62,7 @@ public class GerenciadorDeClientes extends Thread{
                     }
                 }
                 //Lista o nome de todos os clientes logados
-                else if (msg.equals("::listar-clientes")){
+                else if (msg.equals(Comandos.LISTA_USUARIOS)){
                     StringBuffer str = new StringBuffer();
                     for(String c: clientes.keySet()){
                         str.append(c);
