@@ -26,12 +26,17 @@ public class ClienteSocket {
 
                         while(true){
                             String mensagem = leitor.readLine();
+                            if (mensagem == null || mensagem.isEmpty())
+                                continue;
+
                             System.out.println("O servidor disse - "+mensagem);
                         }
 
                     } catch (IOException e) {
                         System.out.println("Impossivel ler a mensagem recebida");
                         throw new RuntimeException(e);
+                        //Fechar a conexão
+
                     }
                 }
             }.start();
@@ -44,6 +49,9 @@ public class ClienteSocket {
             while(true){
                 String mensagemTerminal = leitorTerminal.readLine();
                 escritor.println(mensagemTerminal);
+                if(mensagemTerminal.equalsIgnoreCase("::SAIR")) {
+                    System.exit(0);
+                }
             }
 
         } catch (UnknownHostException e) {
