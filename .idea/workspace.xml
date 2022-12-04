@@ -7,7 +7,6 @@
     <list default="true" id="8c2d239e-2cba-4f2b-b848-7c4dd1bb3be8" name="Changes" comment="Começando os trabalhos">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/src/ClienteSocketSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/src/ClienteSocketSwing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/src/Comandos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/src/Comandos.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/src/GerenciadorDeClientes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/src/GerenciadorDeClientes.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -83,7 +82,7 @@
       <option name="presentableId" value="Default" />
       <updated>1669808457067</updated>
       <workItem from="1669808459173" duration="3313000" />
-      <workItem from="1669861462310" duration="25705000" />
+      <workItem from="1669861462310" duration="28024000" />
     </task>
     <task id="LOCAL-00001" summary="Começando os trabalhos">
       <created>1669858466363</created>

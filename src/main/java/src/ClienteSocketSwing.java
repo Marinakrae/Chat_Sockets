@@ -17,6 +17,7 @@ public class ClienteSocketSwing extends JFrame {
     private JList liUsuarios = new JList();
     private PrintWriter escritor;
     private BufferedReader leitor;
+    private JScrollPane scrollTaVisor = new JScrollPane(taVisor);
 
     public ClienteSocketSwing() {
         setTitle("Chat com sockets");
@@ -30,7 +31,7 @@ public class ClienteSocketSwing extends JFrame {
         liUsuarios.setPreferredSize(new Dimension(100, 140));
 
         add(taEditor, BorderLayout.SOUTH);
-        add(new JScrollPane(taVisor), BorderLayout.CENTER);
+        add(scrollTaVisor, BorderLayout.CENTER);
         add(new JScrollPane(liUsuarios), BorderLayout.WEST);
 
         pack();
@@ -42,48 +43,81 @@ public class ClienteSocketSwing extends JFrame {
     }
 
     private void iniciarEscritor(){
-      taEditor.addKeyListener(new KeyListener() {
-          @Override
-          public void keyTyped(KeyEvent e) {
-          }
+        taEditor.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
 
-          @Override
-          public void keyPressed(KeyEvent e) {
-              if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                  //escrevendo para o servidor
-                  if(taVisor.getText().isEmpty()){
-                      return;
-                  }
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    //escrevendo para o servidor
+                    if(taVisor.getText().isEmpty()){
+                        return;
+                    }
 
-                  Object usuario = liUsuarios.getSelectedValue();
-                  if(usuario != null){
-                      //jogando no visor
-                      taVisor.append("Eu: ");
-                      taVisor.append(taEditor.getText());
-                      taVisor.append("\n");
+                    Object usuario = liUsuarios.getSelectedValue();
+                    if(usuario != null){
+                        //jogando no visor
+                        taVisor.append("Eu: ");
+                        taVisor.append(taEditor.getText());
+                        taVisor.append("\n");
 
-                      escritor.println(Comandos.MENSAGEM+usuario);
-                      escritor.println(taEditor.getText());
+                        escritor.println(Comandos.MENSAGEM+usuario);
+                        escritor.println(taEditor.getText());
 
-                      //limpando o editor
-                      taEditor.setText("");
-                      e.consume();
-                  } else {
-                      if(taVisor.getText().equalsIgnoreCase(Comandos.SAIR)) {
-                          System.exit(0);
-                      }
-                      JOptionPane.showMessageDialog(ClienteSocketSwing.this, "Selecione um usuario");
-                      return;
-                  }
+                        //limpando o editor
+                        taEditor.setText("");
+                        e.consume();
+                    } else {
+                        if(taVisor.getText().equalsIgnoreCase(Comandos.SAIR)) {
+                            System.exit(0);
+                        }
+                        JOptionPane.showMessageDialog(ClienteSocketSwing.this, "Selecione um usuario");
+                        return;
+                    }
 
-              }
-          }
+                }
+            }
 
-          @Override
-          public void keyReleased(KeyEvent e) {
+            @Override
+            public void keyReleased(KeyEvent e) {
 
-          }
-      });
+            }
+        });
+    }
+
+    private void iniciarLeitor() {
+        //Lendo mensagens do servidor
+        try {
+            while(true){
+                String mensagem = leitor.readLine();
+                if (mensagem == null || mensagem.isEmpty())
+                    continue;
+
+                //recebe o texto
+                if (mensagem.startsWith(Comandos.LISTA_USUARIOS)){
+                    String[] usuarios =
+                            leitor.readLine().split(",");
+                    preencherListaUsuarios(usuarios);
+                } else if (mensagem.equals(Comandos.LOGIN)){
+                    String login = JOptionPane.showInputDialog("Qual o seu login?");
+                    escritor.println(login);
+                } else if (mensagem.equals(Comandos.LOGIN_NEGADO)){
+                    JOptionPane.showMessageDialog(
+                            ClienteSocketSwing.this, "O login é inválido");
+                } else if (mensagem.equals(Comandos.LOGIN_ACEITO)){
+                    atualizarListaUsuarios();
+                }else {
+                    taVisor.append(mensagem);
+                    taVisor.append("\n");
+                    taVisor.setCaretPosition(taVisor.getDocument().getLength());
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Impossivel ler a mensagem recebida");
+            throw new RuntimeException(e);
+        }
     }
 
     private void preencherListaUsuarios(String[] usuarios){
@@ -111,37 +145,6 @@ public class ClienteSocketSwing extends JFrame {
 
     }
 
-    private void iniciarLeitor() {
-        //Lendo mensagens do servidor
-        try {
-            while(true){
-                String mensagem = leitor.readLine();
-                if (mensagem == null || mensagem.isEmpty())
-                    continue;
-
-                //recebe o texto
-                if (mensagem.startsWith(Comandos.LISTA_USUARIOS)){
-                    String[] usuarios =
-                            leitor.readLine().split(",");
-                    preencherListaUsuarios(usuarios);
-                } else if (mensagem.equals(Comandos.LOGIN)){
-                    String login = JOptionPane.showInputDialog("Qual o seu login?");
-                    escritor.println(login);
-                } else if (mensagem.equals(Comandos.LOGIN_NEGADO)){
-                    JOptionPane.showMessageDialog(
-                            ClienteSocketSwing.this, "o login é inválido");
-                } else if (mensagem.equals(Comandos.LOGIN_ACEITO)){
-                    atualizarListaUsuarios();
-                }else {
-                    taVisor.append(mensagem);
-                    taVisor.append("\n");
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Impossivel ler a mensagem recebida");
-            throw new RuntimeException(e);
-        }
-    }
 
     private void atualizarListaUsuarios() {
         escritor.println(Comandos.LISTA_USUARIOS);

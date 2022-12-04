@@ -77,17 +77,17 @@ public class GerenciadorDeClientes extends Thread{
 
         while(true){
             escritor.println(Comandos.LOGIN);
-            String login = leitor.readLine().toLowerCase().replaceAll(",","");
+            this.nomeCliente = leitor.readLine().toLowerCase().replaceAll(",","");
 
             //teste pra ver se n é null
             if(this.nomeCliente.equalsIgnoreCase("null") || this.nomeCliente.isEmpty()){
                 escritor.println(Comandos.LOGIN_NEGADO);
             }
             //teste para n add o mesmo usuario
-            else if(clientes.containsKey(login)){
+            else if(clientes.containsKey(this.nomeCliente)){
 
             } else {
-                this.nomeCliente = login;
+                this.nomeCliente = this.nomeCliente;
                 escritor.println(Comandos.LOGIN_ACEITO);
                 escritor.println("Ola, "+this.nomeCliente);
                 //Colocar o cliente na lista
@@ -101,15 +101,19 @@ public class GerenciadorDeClientes extends Thread{
         }
     }
 
-    private void atualizarListaUsuarios(GerenciadorDeClientes gerenciadorDeClientes) {
+    private void atualizarListaUsuarios(GerenciadorDeClientes cliente) {
         StringBuffer str = new StringBuffer();
         for(String c: clientes.keySet()){
+            //testar para que o user n veja ele mesmo
+            if(cliente.getNomeCliente().equals(c))
+                continue;
             str.append(c);
             str.append(",");
         }
-        str.delete(str.length()-1, str.length());
-        gerenciadorDeClientes.getEscritor().println(Comandos.LISTA_USUARIOS);
-        gerenciadorDeClientes.getEscritor().println(str.toString());
+        if (str.length() > 0)
+            str.delete(str.length()-1, str.length());
+        cliente.getEscritor().println(Comandos.LISTA_USUARIOS);
+        cliente.getEscritor().println(str.toString());
     }
 
 
