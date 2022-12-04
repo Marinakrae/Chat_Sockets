@@ -39,37 +39,28 @@ public class GerenciadorDeClientes extends Thread{
             leitor = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
             //Mandando uma mensagem para o cliente
             escritor = new PrintWriter(cliente.getOutputStream(), true); //o flush é o envio para o cliente
-            escritor.println("Ola, por favor, digite o seu nome: ");
-            String msg = leitor.readLine();
-            this.nomeCliente = msg;
-            escritor.println("Ola, "+this.nomeCliente);
-            //Colocar o cliente na lista
-            clientes.put(this.nomeCliente, this);
+
+            efetuarLogin();
+            String msg;
 
             while (true){
                 msg = leitor.readLine();
                 if(msg.equalsIgnoreCase(Comandos.SAIR)){
                     this.cliente.close();
-                } else if (msg.toLowerCase().startsWith(Comandos.MENSAGEM)) {
+                } else if (msg.startsWith(Comandos.MENSAGEM)) {
                     //pegar o cliente com base no nome informado
                     String nomeDestinatario = msg.substring(Comandos.MENSAGEM.length(), msg.length());
                     GerenciadorDeClientes destinatario = clientes.get(nomeDestinatario);
                     if (destinatario == null) {
                         escritor.println("O cliente informado nao existe");
                     } else {
-                        escritor.println("Digite uma menssagem para " + destinatario.getNomeCliente());
+                        //escritor.println("Digite uma menssagem para " + destinatario.getNomeCliente());
                         destinatario.getEscritor().println(this.nomeCliente + " disse: " + leitor.readLine());
                     }
                 }
                 //Lista o nome de todos os clientes logados
                 else if (msg.equals(Comandos.LISTA_USUARIOS)){
-                    StringBuffer str = new StringBuffer();
-                    for(String c: clientes.keySet()){
-                        str.append(c);
-                        str.append(",");
-                    }
-                    str.delete(str.length()-1, str.length());
-                    escritor.println(str.toString());
+                    atualizarListaUsuarios(this);
                 }else {
                     escritor.println(this.nomeCliente + ", você disse: "+ msg);
                 }
@@ -77,7 +68,49 @@ public class GerenciadorDeClientes extends Thread{
 
         } catch (IOException e) {
             System.out.println("O cliente fechou a conexão");
+            clientes.remove(this.nomeCliente);
             throw new RuntimeException(e);
         }
     }
+
+    private void efetuarLogin() throws IOException {
+
+        while(true){
+            escritor.println(Comandos.LOGIN);
+            String login = leitor.readLine().toLowerCase().replaceAll(",","");
+
+            //teste pra ver se n é null
+            if(this.nomeCliente.equalsIgnoreCase("null") || this.nomeCliente.isEmpty()){
+                escritor.println(Comandos.LOGIN_NEGADO);
+            }
+            //teste para n add o mesmo usuario
+            else if(clientes.containsKey(login)){
+
+            } else {
+                this.nomeCliente = login;
+                escritor.println(Comandos.LOGIN_ACEITO);
+                escritor.println("Ola, "+this.nomeCliente);
+                //Colocar o cliente na lista
+                clientes.put(this.nomeCliente, this);
+
+                for(String cliente: clientes.keySet()){
+                    atualizarListaUsuarios(clientes.get(cliente));
+                }
+                break;
+            }
+        }
+    }
+
+    private void atualizarListaUsuarios(GerenciadorDeClientes gerenciadorDeClientes) {
+        StringBuffer str = new StringBuffer();
+        for(String c: clientes.keySet()){
+            str.append(c);
+            str.append(",");
+        }
+        str.delete(str.length()-1, str.length());
+        gerenciadorDeClientes.getEscritor().println(Comandos.LISTA_USUARIOS);
+        gerenciadorDeClientes.getEscritor().println(str.toString());
+    }
+
+
 }

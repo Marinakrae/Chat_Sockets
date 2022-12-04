@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8c2d239e-2cba-4f2b-b848-7c4dd1bb3be8" name="Changes" comment="Começando os trabalhos">
-      <change afterPath="$PROJECT_DIR$/src/main/java/src/ClienteSocketSwing.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/src/Comandos.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/src/ClienteSocketSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/src/ClienteSocketSwing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/src/Comandos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/src/Comandos.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/src/GerenciadorDeClientes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/src/GerenciadorDeClientes.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -55,14 +55,24 @@
       <recent name="src" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.ClienteSocket">
     <configuration name="ClienteSocket" type="Application" factoryName="Application" singleton="false">
-      <option name="MAIN_CLASS_NAME" value="src.ClienteSocket" />
+      <option name="MAIN_CLASS_NAME" value="src.ClienteSocketSwing" />
       <module name="Chat_Sockets" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+      <module name="Chat_Sockets" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Unnamed" />
+      <item itemvalue="Application.ClienteSocket" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -73,7 +83,7 @@
       <option name="presentableId" value="Default" />
       <updated>1669808457067</updated>
       <workItem from="1669808459173" duration="3313000" />
-      <workItem from="1669861462310" duration="20047000" />
+      <workItem from="1669861462310" duration="25705000" />
     </task>
     <task id="LOCAL-00001" summary="Começando os trabalhos">
       <created>1669858466363</created>
